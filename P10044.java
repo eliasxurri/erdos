@@ -5,34 +5,29 @@ public class P10044 {
 public static void main(String[] args) {
 
     Scanner c = new Scanner(System.in);
-    int cases = c.nextInt();
-    String cero = "MF DOOM";
-    for (int currentCase = 1; currentCase<=cases; currentCase++) {
-
-        int p = c.nextInt();
-        int n = c.nextInt();
-
-        c.nextLine();
+    String cero = c.nextLine();
+    int v = c.nextInt();
+    int e = c.nextInt();
+    c.nextLine();
 
         HashMap<String, ArrayList<String>> graph = new HashMap<>();
-        String[] testingNames = new String[n];
-        ArrayList<String> authors = new ArrayList<>();
+        String[] nombrestester = new String[e];
+        ArrayList<String> artistas = new ArrayList<>();
 
-        HashMap<String, Integer> eNums = new HashMap<>();
+        HashMap<String, Integer> distancia = new HashMap<>();
 
-        while (p-- > 0) {
+        while (v-- > 0) {
 
-            String[] paperAuthors = c.nextLine().split(":")[0].split("\\,");
-            for (int i = 0; i < paperAuthors.length; i++) {
-                paperAuthors[i] = paperAuthors[i].trim();
+            String[] artista = c.nextLine().split(":")[0].split("\\,");
+            for (int i = 0; i < artista.length; i++) {
+                artista[i] = artista[i].trim();
             }
 
-            for (String author : paperAuthors)
-                if (!authors.contains(author))
-                    authors.add(author);
+            for (String author : artista)
+                if (!artistas.contains(author))
+                    artistas.add(author);
 
-            // create and update the graph
-            for (String name : paperAuthors) {
+            for (String name : artista) {
 
                 ArrayList<String> updatedValue;
 
@@ -41,7 +36,7 @@ public static void main(String[] args) {
                 else
                     updatedValue = new ArrayList<>();
 
-                for (String paperAuthor : paperAuthors)
+                for (String paperAuthor : artista)
                     if (!paperAuthor.equals(name))
                         updatedValue.add(paperAuthor);
 
@@ -51,32 +46,30 @@ public static void main(String[] args) {
         }
 
 
-        //initialize the eNums map:
-        for (String author : authors)
+        for (String author : artistas)
             if (!author.equals(cero))
-                eNums.put(author, Integer.MAX_VALUE);
+                distancia.put(author, Integer.MAX_VALUE);
             else
-                eNums.put(author, 0);
+                distancia.put(author, 0);
 
 
-        for (int i = 0; i < n; i++)
-            testingNames[i] = c.nextLine();
+        for (int i = 0; i < e; i++)
+            nombrestester[i] = c.nextLine();
 
-        calculateEnums(cero, graph, eNums);
+        calculardistancia(cero, graph, distancia);
 
 
-        System.out.println("Scenario " + currentCase);
-        for (String name : testingNames)
-            if (!eNums.keySet().contains(name) || eNums.get(name) == Integer.MAX_VALUE)
-                System.out.println(name + " infinity");
+        for (String name : nombrestester)
+            if (!distancia.keySet().contains(name) || distancia.get(name) == Integer.MAX_VALUE)
+                System.out.println(name + " infinito");
             else
-                System.out.println(name + " " + eNums.get(name));
+                System.out.println(name + " " + distancia.get(name));
 
-    }
+    
 
 }
 
-private static void calculateEnums(String name, HashMap<String, ArrayList<String>> graph,   HashMap<String, Integer> eNums) {
+private static void calculardistancia(String name, HashMap<String, ArrayList<String>> graph,   HashMap<String, Integer> eNums) {
 
     ArrayList<String> notCalculated = new ArrayList<>();
     notCalculated.add(name);
